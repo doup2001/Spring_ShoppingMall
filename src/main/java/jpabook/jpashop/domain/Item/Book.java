@@ -1,4 +1,4 @@
-package jpabook.jpashop.domain;
+package jpabook.jpashop.domain.Item;
 
 import jakarta.persistence.Entity;
 import lombok.Getter;
