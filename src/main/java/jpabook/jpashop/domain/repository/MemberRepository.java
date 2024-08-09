@@ -1,13 +1,11 @@
 package jpabook.jpashop.domain.repository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.JoinColumn;
-import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.entity.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 
 import java.util.List;
 
