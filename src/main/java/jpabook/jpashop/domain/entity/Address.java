@@ -1,22 +1,25 @@
 package jpabook.jpashop.domain.entity;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
 @Embeddable
+@Getter
 public class Address {
 
 
-    private String City;
+    private String city;
     private String street;
-    private String zipCode;
+    private String zipcode;
 
 
     public Address() {
     }
 
     public Address(String city, String street, String zipCode) {
-        City = city;
+        this.city = city;
         this.street = street;
-        this.zipCode = zipCode;
+        this.zipcode = zipCode;
     }
 }

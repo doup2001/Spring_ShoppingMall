@@ -1,6 +1,9 @@
 package jpabook.jpashop.domain.repository;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jpabook.jpashop.domain.entity.Address;
 import jpabook.jpashop.domain.entity.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +32,4 @@ public class MemberRepository {
         return em.createQuery("select m from Member m", Member.class)
                 .getResultList();
     }
-
-
-
 }
