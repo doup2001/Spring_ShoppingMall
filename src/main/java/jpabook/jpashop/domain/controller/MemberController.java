@@ -10,26 +10,26 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/members/new")
+    @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("memberForm", new MemberFormDto());
         return "members/createMemberForm";
     }
 
-    @PostMapping("/members/new")
+    @PostMapping("/new")
     public String createMember(@ModelAttribute MemberFormDto memberForm) {
 
         Member member = new Member();
@@ -38,5 +38,14 @@ public class MemberController {
         memberService.join(member);
 
         return "redirect:/members/new";
+    }
+
+    @GetMapping
+    public String list(Model model) {
+
+        List<Member> members = memberService.findByALl();
+        model.addAttribute("members", members);
+
+        return "members/memberList";
     }
 }
