@@ -8,6 +8,7 @@ import jpabook.jpashop.domain.entity.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,13 +16,16 @@ import java.util.List;
 @Repository
 @Getter @Setter
 @RequiredArgsConstructor
+@Slf4j
 public class MemberRepository {
 
     private final EntityManager em;
 
     public Long save(Member member) {
         em.persist(member);
+        log.info("[MyLog] Save new Member : " + member);
         return member.getId();
+
     }
 
     public Member findByOne(Long id) {
