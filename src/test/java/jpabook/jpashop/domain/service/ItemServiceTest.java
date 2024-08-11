@@ -3,6 +3,7 @@ package jpabook.jpashop.domain.service;
 import jakarta.persistence.EntityManager;
 import jpabook.jpashop.domain.Item.Book;
 import jpabook.jpashop.domain.Item.Item;
+import jpabook.jpashop.domain.dto.ItemFormDto;
 import jpabook.jpashop.domain.repository.ItemRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
+@Rollback(value = false)
 public class ItemServiceTest {
 
     @Autowired private ItemRepository itemRepository;
@@ -62,11 +64,24 @@ public class ItemServiceTest {
     }
 
     @Test
-    public void 수량체크_증가() throws Exception{
+    public void 아이템_수정() throws Exception{
         //given
-        
+        Book item = new Book();
+        item.setName("JPA");
+        item.setPrice(15000);
+        item.setStockQuantity(10);
+        item.setAuthor("김영한");
+        item.setIsbn("1234");
+        Long ItemId = itemService.save(item);
+
         //when
-        
+        ItemFormDto updateDto = new ItemFormDto();
+        String new_name = "이도연";
+        updateDto.setAuthor(new_name);
+
+        Book updateItem = (Book) itemService.update(ItemId, updateDto);
+
         //then
+        assertThat(updateItem.getAuthor()).isEqualTo(new_name);
     }
 }

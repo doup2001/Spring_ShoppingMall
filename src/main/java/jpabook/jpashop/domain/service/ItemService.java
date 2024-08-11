@@ -1,6 +1,8 @@
 package jpabook.jpashop.domain.service;
 
+import jpabook.jpashop.domain.Item.Book;
 import jpabook.jpashop.domain.Item.Item;
+import jpabook.jpashop.domain.dto.ItemFormDto;
 import jpabook.jpashop.domain.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,20 @@ public class ItemService {
 
     public List<Item> findByAll() {
         return itemRepository.findByAll();
+    }
+
+    //수정 로직
+
+    public Item update(Long id, ItemFormDto updateItem) {
+        Book item = (Book) itemRepository.findByOne(id);
+
+        item.setName(updateItem.getName());
+        item.setPrice(updateItem.getPrice());
+        item.setStockQuantity(updateItem.getStockQuantity());
+        item.setIsbn(updateItem.getIsbn());
+        item.setAuthor(updateItem.getAuthor());
+
+        return item;
     }
 
 }
