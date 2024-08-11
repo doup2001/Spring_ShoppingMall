@@ -25,12 +25,12 @@
             <input type="text" th:field="*{city}" class="form-control" placeholder="도시를 입력하세요">
         </div>
         <div class="form-group">
-            <label th:for="street">거리</label>
-            <input type="text" th:field="*{street}" class="form-control" placeholder="거리를 입력하세요">
+            <label th:for="street">도로명_주소</label>
+            <input type="text" th:field="*{street}" class="form-control" placeholder="도로명 주소를 입력하세요">
         </div>
         <div class="form-group">
-            <label th:for="zipcode">우편번호</label>
-            <input type="text" th:field="*{zipcode}" class="form-control" placeholder="우편번호를 입력하세요">
+            <label th:for="zipcode">상세_주소</label>
+            <input type="text" th:field="*{zipcode}" class="form-control" placeholder="상세 주소를 입력하세요">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
