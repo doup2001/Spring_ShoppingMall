@@ -37,5 +37,8 @@ public class OrderService {
         return orderRepository.findById(id);
     }
 
-    public
+    public void cancelOrder(Long id) {
+        Order order = orderRepository.findById(id);
+        order.cancel();
+    }
 }
