@@ -27,7 +27,18 @@ public abstract class Item {
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
 
+    //// 비즈니스 로직
 
+    public void removeOrder(int quantity) {
+        this.stockQuantity += quantity;
+    }
 
+    public void addOrder(int quantity) {
+        int res = stockQuantity - quantity;
 
+        if (res < 0)
+            throw new NotEnoughStockException(new Throwable());
+        else
+            this.stockQuantity = res;
+    }
 }
