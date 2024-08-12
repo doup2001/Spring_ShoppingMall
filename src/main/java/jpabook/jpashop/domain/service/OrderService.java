@@ -6,8 +6,11 @@ import jpabook.jpashop.domain.repository.ItemRepository;
 import jpabook.jpashop.domain.repository.MemberRepository;
 import jpabook.jpashop.domain.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +43,10 @@ public class OrderService {
     public void cancelOrder(Long id) {
         Order order = orderRepository.findById(id);
         order.cancel();
+    }
+
+    public List<Order> findAll() {
+
+
     }
 }
