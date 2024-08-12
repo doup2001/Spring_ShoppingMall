@@ -1,7 +1,7 @@
 package jpabook.jpashop.domain.service;
 
-import jpabook.jpashop.domain.Item.Book;
-import jpabook.jpashop.domain.Item.Item;
+import jpabook.jpashop.domain.entity.Item.Book;
+import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.dto.ItemFormDto;
 import jpabook.jpashop.domain.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;

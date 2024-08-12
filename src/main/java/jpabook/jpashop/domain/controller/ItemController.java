@@ -1,13 +1,11 @@
 package jpabook.jpashop.domain.controller;
 
-import jpabook.jpashop.domain.Item.Book;
-import jpabook.jpashop.domain.Item.Item;
+import jpabook.jpashop.domain.entity.Item.Book;
+import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.dto.ItemFormDto;
-import jpabook.jpashop.domain.dto.MemberFormDto;
 import jpabook.jpashop.domain.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
