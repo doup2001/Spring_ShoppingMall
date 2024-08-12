@@ -1,14 +1,10 @@
 package jpabook.jpashop.domain.service;
 
-import jakarta.persistence.EntityManager;
-import jpabook.jpashop.domain.Item.Book;
-import jpabook.jpashop.domain.Item.Item;
+import jpabook.jpashop.domain.entity.Item.Book;
+import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.dto.ItemFormDto;
 import jpabook.jpashop.domain.repository.ItemRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
