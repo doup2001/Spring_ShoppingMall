@@ -28,17 +28,17 @@ public abstract class Item {
     private List<Category> categories = new ArrayList<>();
 
     //// 비즈니스 로직
-
-    public void removeOrder(int quantity) {
+    public void addStock(int quantity) {
         this.stockQuantity += quantity;
     }
 
-    public void addOrder(int quantity) {
-        int res = stockQuantity - quantity;
-
-        if (res < 0)
-            throw new NotEnoughStockException(new Throwable());
-        else
-            this.stockQuantity = res;
+    public void removeStock(int quantity) {
+        int restStock = this.stockQuantity - quantity;
+        if (restStock < 0) {
+            throw new NotEnoughStockException("need More stock");
+        }
+        this.stockQuantity = restStock;
     }
+
+
 }
