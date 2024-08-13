@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain.service;
 
+import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.domain.entity.*;
 import jpabook.jpashop.domain.entity.Item.Book;
 import jpabook.jpashop.domain.entity.Item.Item;
