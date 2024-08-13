@@ -1,12 +1,12 @@
 package jpabook.jpashop.domain.service;
 
+import jpabook.jpashop.domain.controller.OrderSearch;
 import jpabook.jpashop.domain.entity.*;
 import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.repository.ItemRepository;
 import jpabook.jpashop.domain.repository.MemberRepository;
 import jpabook.jpashop.domain.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,7 @@ public class OrderService {
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
 
-    public Long save(Long memberId, Long itemId, int count) {
+    public Long order(Long memberId, Long itemId, int count) {
         Member member = memberRepository.findByOne(memberId);
         Item item = itemRepository.findByOne(itemId);
 
@@ -32,7 +32,8 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
 
         Order order = Order.createOrder(member, delivery, orderItem);
-        orderRepository.save(order);
+
+        orderRepository.order(order);
         return order.getId();
     }
 
@@ -45,8 +46,7 @@ public class OrderService {
         order.cancel();
     }
 
-    public List<Order> findAll() {
-
-
+    public List<Order> findAll(OrderSearch orderSearch) {
+        return orderRepository.findAll(orderSearch);
     }
 }
