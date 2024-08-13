@@ -14,16 +14,16 @@
         </div>
         <div class="form-group address-group">
             <label th:for="city">도로명주소</label>
-            <input type="text" th:field="*{city}" class="form-control" id="sample6_address" placeholder="도로명주소를 입력하세요" disabled>
+            <input type="text" th:field="*{city}" class="form-control" placeholder="도로명주소를 입력하세요" readonly>
             <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기">
         </div>
         <div class="form-group">
             <label th:for="street">상세주소</label>
-            <input type="text" th:field="*{street}" class="form-control" id="sample6_detailAddress" placeholder="상세주소를 입력하세요">
+            <input type="text" th:field="*{street}" class="form-control" placeholder="상세주소를 입력하세요">
         </div>
         <div class="form-group">
             <label th:for="zipcode">우편번호</label>
-            <input type="text" th:field="*{zipcode}" class="form-control" id="sample6_postcode" placeholder="우편번호를 입력하세요" disabled>
+            <input type="text" th:field="*{zipcode}" class="form-control" placeholder="우편번호를 입력하세요" readonly>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -57,9 +57,9 @@
                     }
                 }
 
-                document.getElementById('sample6_postcode').value = data.zonecode;
-                document.getElementById("sample6_address").value = addr;
-                document.getElementById("sample6_detailAddress").focus();
+                document.getElementById('zipcode').value = data.zonecode;
+                document.getElementById("city").value = addr;
+                document.getElementById("street").focus();
             }
         }).open();
     }

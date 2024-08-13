@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.controller;
 
 
+import jakarta.validation.Valid;
 import jpabook.jpashop.domain.dto.MemberFormDto;
 import jpabook.jpashop.domain.entity.Address;
 import jpabook.jpashop.domain.entity.Member;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +32,11 @@ public class MemberController {
     }
 
     @PostMapping("/new")
-    public String createMember(@ModelAttribute MemberFormDto memberForm) {
+    public String createMember(@Valid @ModelAttribute MemberFormDto memberForm, BindingResult result) {
 
+        if (result.hasErrors()) {
+            return "members/createMemberForm";
+        }
         Member member = new Member();
         member.setName(memberForm.getName());
         member.setAddress(new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode()));
