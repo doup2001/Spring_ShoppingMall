@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.entity;
 
 import jakarta.persistence.*;
+import jpabook.jpashop.domain.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,7 +61,7 @@ public class Order {
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
-        order.setOrderStatus(jpabook.jpashop.domain.entity.OrderStatus.ORDER);
+        order.setOrderStatus(jpabook.jpashop.domain.OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
@@ -70,7 +71,7 @@ public class Order {
         if (delivery.getDeliveryStatus() == DeliveryStatus.COMP) {
             throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
         }
-        this.setOrderStatus(jpabook.jpashop.domain.entity.OrderStatus.CANCEL);
+        this.setOrderStatus(jpabook.jpashop.domain.OrderStatus.CANCEL);
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }
