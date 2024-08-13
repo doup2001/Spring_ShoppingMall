@@ -1,12 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
-<style>
-    .fieldError {
-        border-color: #bd2130;
-    }
-</style>
-<body>
 
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -14,23 +8,22 @@
     <form role="form" action="/members/new" th:object="${memberForm}" method="post">
         <div class="form-group">
             <label th:for="name">이름</label>
-
             <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요"
                    th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">
             <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</p>
-
+        </div>
+        <div class="form-group address-group">
+            <label th:for="city">도로명주소</label>
+            <input type="text" th:field="*{city}" class="form-control" id="sample6_address" placeholder="도로명주소를 입력하세요" disabled>
+            <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기">
         </div>
         <div class="form-group">
-            <label th:for="city">도시</label>
-            <input type="text" th:field="*{city}" class="form-control" placeholder="도시를 입력하세요">
+            <label th:for="street">상세주소</label>
+            <input type="text" th:field="*{street}" class="form-control" id="sample6_detailAddress" placeholder="상세주소를 입력하세요">
         </div>
         <div class="form-group">
-            <label th:for="street">도로명주소</label>
-            <input type="text" th:field="*{street}" class="form-control" placeholder="도로명 주소를 입력하세요">
-        </div>
-        <div class="form-group">
-            <label th:for="zipcode">상세주소</label>
-            <input type="text" th:field="*{zipcode}" class="form-control" placeholder="상세 주소를 입력하세요">
+            <label th:for="zipcode">우편번호</label>
+            <input type="text" th:field="*{zipcode}" class="form-control" id="sample6_postcode" placeholder="우편번호를 입력하세요" disabled>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -38,5 +31,38 @@
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                if (data.userSelectedType === 'R') { // 도로명 주소 선택
+                    addr = data.roadAddress;
+                } else { // 지번 주소 선택
+                    addr = data.jibunAddress;
+                }
+
+                if(data.userSelectedType === 'R'){
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                }
+
+                document.getElementById('sample6_postcode').value = data.zonecode;
+                document.getElementById("sample6_address").value = addr;
+                document.getElementById("sample6_detailAddress").focus();
+            }
+        }).open();
+    }
+</script>
 </body>
 </html>
