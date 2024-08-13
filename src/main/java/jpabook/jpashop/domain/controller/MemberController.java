@@ -37,7 +37,7 @@ public class MemberController {
         member.setAddress(new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode()));
         memberService.join(member);
 
-        return "redirect:/members/new";
+        return "redirect:/members";
     }
 
     @GetMapping
