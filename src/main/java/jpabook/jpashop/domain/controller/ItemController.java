@@ -45,7 +45,7 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}/edit")
-    public String Edit(@PathVariable Long itemId, Model model) {
+    public String editForm(@PathVariable Long itemId, Model model) {
 
         Book item = (Book) itemService.findByone(itemId);
 
@@ -60,5 +60,14 @@ public class ItemController {
 
         model.addAttribute("form", form);
         return "items/updateItemForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute ItemFormDto formDto, Model model) {
+
+        Item form = itemService.update(itemId, formDto);
+
+        model.addAttribute("form", form);
+        return "redirect:/items";
     }
 }
