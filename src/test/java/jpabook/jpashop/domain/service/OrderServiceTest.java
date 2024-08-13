@@ -36,7 +36,7 @@ public class OrderServiceTest {
         itemService.save(item);
 
         //when
-        Long id = orderService.save(member.getId(), item.getId(), 3);
+        Long id = orderService.order(member.getId(), item.getId(), 3);
         Order getOrder = orderRepository.findById(id);
 
         //then
@@ -60,7 +60,7 @@ public class OrderServiceTest {
         itemService.save(item);
 
         //when
-        Long id = orderService.save(member.getId(), item.getId(), 3);
+        Long id = orderService.order(member.getId(), item.getId(), 3);
         Order getOrder = orderService.findById(id);
 
         //then
@@ -80,7 +80,7 @@ public class OrderServiceTest {
         item.setPrice(10000);
         item.setStockQuantity(stock);
         itemService.save(item);
-        Long id = orderService.save(member.getId(), item.getId(), 3);
+        Long id = orderService.order(member.getId(), item.getId(), 3);
         Order getOrder = orderService.findById(id);
 
         //when
@@ -99,7 +99,7 @@ public class OrderServiceTest {
         itemService.save(item);
 
         int orderCount = 11; //재고보다 많은 수량 //When
-        orderService.save(member.getId(), item.getId(), orderCount);
+        orderService.order(member.getId(), item.getId(), orderCount);
 
         //Then
         fail("재고 수량 부족 예외가 발생해야 한다."); }
