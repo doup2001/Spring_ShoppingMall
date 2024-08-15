@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("items")
+@RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -21,11 +21,11 @@ public class ItemController {
     @GetMapping("/new")
     public String createItem(Model model) {
         model.addAttribute("form", new ItemFormDto());
-        return "/items/createItemForm";
+        return "items/createItemForm"; // 템플릿 경로 수정
     }
 
     @PostMapping("/new")
-    public String postItem(@ModelAttribute ItemFormDto form) {
+    public String saveItem(@ModelAttribute ItemFormDto form) {
         Book item = new Book();
         item.setName(form.getName());
         item.setPrice(form.getPrice());
@@ -39,35 +39,35 @@ public class ItemController {
 
     @GetMapping
     public String listItem(Model model) {
-        List<Item> items = itemService.findByAll();
+        List<Item> items = itemService.findAll();
         model.addAttribute("items", items);
-        return "items/itemList";
+        return "items/itemList"; // 템플릿 경로 수정
     }
 
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = itemService.findById(itemId); // Item으로 변경
 
-        Book item = (Book) itemService.findByone(itemId);
+        if (!(item instanceof Book)) {
+            throw new IllegalArgumentException("Item is not of type Book");
+        }
 
+        Book book = (Book) item;
         ItemFormDto form = new ItemFormDto();
-
-        form.setId(item.getId());
-        form.setPrice(item.getPrice());
-        form.setStockQuantity(item.getStockQuantity());
-        form.setName(item.getName());
-        form.setAuthor(item.getAuthor());
-        form.setIsbn(item.getIsbn());
+        form.setId(book.getId());
+        form.setPrice(book.getPrice());
+        form.setStockQuantity(book.getStockQuantity());
+        form.setName(book.getName());
+        form.setAuthor(book.getAuthor());
+        form.setIsbn(book.getIsbn());
 
         model.addAttribute("form", form);
-        return "items/updateItemForm";
+        return "items/updateItemForm"; // 템플릿 경로 수정
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute ItemFormDto formDto, Model model) {
-
-        Item form = itemService.update(itemId, formDto);
-
-        model.addAttribute("form", form);
+    public String edit(@PathVariable Long itemId, @ModelAttribute ItemFormDto formDto) {
+        itemService.update(itemId, formDto);
         return "redirect:/items";
     }
 }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,17 +17,18 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Long join(Member member) {
-        Long memberId = memberRepository.save(member);
-        return memberId;
+        // 회원 저장
+        return memberRepository.save(member).getId();
     }
 
-    public Member findByone(Long id) {
-        Member member = memberRepository.findByOne(id);
-        return member;
+    public Member findById(Long id) {
+        // 회원 ID로 조회 (Optional 사용)
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + id));
     }
 
-    public List<Member> findByALl() {
-        return memberRepository.findByAll();
+    public List<Member> findAll() {
+        // 모든 회원 조회
+        return memberRepository.findAll();
     }
-
 }

@@ -6,7 +6,11 @@ import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.repository.ItemRepository;
 import jpabook.jpashop.domain.repository.MemberRepository;
 import jpabook.jpashop.domain.repository.OrderRepository;
+import jpabook.jpashop.domain.repository.OrderSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +26,10 @@ public class OrderService {
     private final MemberRepository memberRepository;
 
     public Long order(Long memberId, Long itemId, int count) {
-        Member member = memberRepository.findByOne(memberId);
-        Item item = itemRepository.findByOne(itemId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + itemId));
 
         Delivery delivery = new Delivery();
         delivery.setAddress(member.getAddress());
@@ -33,20 +39,22 @@ public class OrderService {
 
         Order order = Order.createOrder(member, delivery, orderItem);
 
-        orderRepository.order(order);
+        orderRepository.save(order); // Save the order
         return order.getId();
     }
 
     public Order findById(Long id) {
-        return orderRepository.findById(id);
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + id));
     }
 
     public void cancelOrder(Long id) {
-        Order order = orderRepository.findById(id);
-        order.cancel();
+        Order order = findById(id); // Use findById to handle the exception
+        order.cancel(); // Call cancel method on the found order
     }
 
     public List<Order> findAll(OrderSearch orderSearch) {
-        return orderRepository.findAll(orderSearch);
+        // Use findAll with Specification to get all matching orders without pagination
+        return orderRepository.findAll(OrderSpecification.search(orderSearch));
     }
 }
