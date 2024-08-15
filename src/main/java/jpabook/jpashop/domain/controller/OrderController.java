@@ -1,6 +1,5 @@
 package jpabook.jpashop.domain.controller;
 
-
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.entity.Member;
@@ -27,9 +26,8 @@ public class OrderController {
 
     @GetMapping("/order")
     public String orderForm(Model model) {
-
-        List<Member> members = memberService.findByALl();
-        List<Item> items = itemService.findByAll();
+        List<Member> members = memberService.findAll(); // findByAll로 변경
+        List<Item> items = itemService.findAll(); // findByAll로 변경
 
         model.addAttribute("members", members);
         model.addAttribute("items", items);
@@ -39,38 +37,41 @@ public class OrderController {
 
     @PostMapping("/order")
     public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, Model model) {
-
         Long orderId = orderService.order(memberId, itemId, count);
         Order order = orderService.findById(orderId);
 
         model.addAttribute("order", order);
 
-        return "redirect:/order";
+        return "redirect:/order"; // 주문 완료 후 다시 주문 페이지로 리다이렉트
     }
 
     @GetMapping("/orders")
     public String list(@ModelAttribute OrderSearch orderSearch, Model model) {
-
         List<Order> orders = orderService.findAll(orderSearch);
         model.addAttribute("orders", orders);
 
         return "order/orderList";
     }
 
-    //주문취소 버튼
     @PostMapping("/orders/{orderId}/cancel")
     public String cancel(@PathVariable Long orderId) {
-
         Order order = orderService.findById(orderId);
-        orderService.cancelOrder(order.getId());
+        orderService.cancelOrder(orderId); // order.getId() 대신 orderId를 직접 사용
 
         return "redirect:/orders";
     }
 
-    //주문 검색 버튼
-    @PostMapping("/orders")
-    public String search(@RequestParam String memberName, @RequestParam OrderStatus orderStatus) {
-        return "redirect:/orders";
-    }
+    @GetMapping("/orders/search")
+    public String search(@RequestParam(required = false) String memberName,
+                         @RequestParam(required = false) OrderStatus orderStatus,
+                         Model model) {
+        OrderSearch orderSearch = new OrderSearch();
+        orderSearch.setMemberName(memberName);
+        orderSearch.setOrderStatus(orderStatus);
 
+        List<Order> orders = orderService.findAll(orderSearch);
+        model.addAttribute("orders", orders);
+
+        return "order/orderList";
+    }
 }

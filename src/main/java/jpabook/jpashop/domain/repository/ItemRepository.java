@@ -1,34 +1,14 @@
 package jpabook.jpashop.domain.repository;
 
-import jakarta.persistence.EntityManager;
 import jpabook.jpashop.domain.entity.Item.Item;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
-@RequiredArgsConstructor
-@Slf4j
-public class ItemRepository {
+public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    private final EntityManager em;
+    // 기본적인 CRUD 메소드가 자동으로 제공됩니다.
 
-    public Long save(Item item) {
-        em.persist(item);
-        log.info("[MyLog] Save new Item : " + item);
-        return item.getId();
-    }
-
-    public Item findByOne(Long id) {
-        return em.find(Item.class, id);
-    }
-
-    public List<Item> findByAll() {
-        return em.createQuery("select i from Item i", Item.class)
-                .getResultList();
-    }
-
-
+    // 추가적인 사용자 정의 메소드가 필요하다면 여기에 정의할 수 있습니다.
 }

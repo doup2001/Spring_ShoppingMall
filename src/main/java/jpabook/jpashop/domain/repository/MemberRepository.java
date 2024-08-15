@@ -1,39 +1,16 @@
 package jpabook.jpashop.domain.repository;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-import jpabook.jpashop.domain.entity.Address;
 import jpabook.jpashop.domain.entity.Member;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
-@Getter @Setter
-@RequiredArgsConstructor
-@Slf4j
-public class MemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    private final EntityManager em;
+    // 기본적인 CRUD 메소드가 자동으로 제공됩니다.
 
-    public Long save(Member member) {
-        em.persist(member);
-        log.info("[MyLog] Save new Member : " + member);
-        return member.getId();
-
-    }
-
-    public Member findByOne(Long id) {
-        return em.find(Member.class, id);
-    }
-
-    public List<Member> findByAll() {
-        return em.createQuery("select m from Member m", Member.class)
-                .getResultList();
-    }
+    // 추가적인 사용자 정의 메소드가 필요하다면 여기에 정의할 수 있습니다.
+    // 예를 들어, 회원 이름으로 검색하는 메소드:
+    // List<Member> findByName(String name);
 }
