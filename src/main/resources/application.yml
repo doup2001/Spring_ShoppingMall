@@ -6,15 +6,23 @@ spring:
 #    driver-class-name : org.h2.Driver
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://java-web-db.c1ukcaym4bjl.ap-northeast-2.rds.amazonaws.com
+    url: jdbc:mysql://java-web-db.c1ukcaym4bjl.ap-northeast-2.rds.amazonaws.com:3306/java_web_db
     username: eedo
     password: david100894!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+
   jpa:
     hibernate:
       ddl-auto: create
+#      dialect: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
+        dialect=org:
+          hibernate:
+            dialect:
+              MySQL5InnoDBDialect:
 #        show_sql: true
         format_sql : true
 
