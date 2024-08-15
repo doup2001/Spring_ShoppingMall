@@ -43,13 +43,13 @@ dependencies {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
 
-	jar {
-		enabled = false
-	}
-
 //	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jar {
+	enabled = false
 }
