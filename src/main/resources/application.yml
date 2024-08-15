@@ -4,7 +4,6 @@ spring:
     username: eedo
     password: david100894!
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialization-mode: always
 
   jpa:
     hibernate:
