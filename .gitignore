@@ -5,6 +5,11 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+#DATABASE
+src/main/resources/application.yml
+application.yml
+.yml
+
 ### STS ###
 .apt_generated
 .classpath
