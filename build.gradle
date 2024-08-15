@@ -42,19 +42,18 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	//Junit4추가
+	// JUnit 4 추가
 	testImplementation ("org.junit.vintage:junit-vintage-engine") {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
 
-	//db
+	// DB
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.2.0'
 	implementation 'org.hibernate:hibernate-core:6.5.2.Final'
 	implementation 'mysql:mysql-connector-java:8.0.33'
-//	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
