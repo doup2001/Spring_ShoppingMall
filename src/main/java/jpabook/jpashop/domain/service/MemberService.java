@@ -31,4 +31,9 @@ public class MemberService {
         // 모든 회원 조회
         return memberRepository.findAll();
     }
+
+    public void delete(Long id) {
+        Member member = findById(id);
+        memberRepository.delete(member);
+    }
 }
