@@ -48,7 +48,7 @@ dependencies {
 	}
 
 	// DB
-	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.2.0'
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.0'
 	implementation 'org.hibernate:hibernate-core:6.5.2.Final'
 	implementation 'mysql:mysql-connector-java:8.0.33'
 	// testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
