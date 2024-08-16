@@ -23,6 +23,15 @@
                 <td th:text="${member.address?.city}"></td>
                 <td th:text="${member.address?.street}"></td>
                 <td th:text="${member.address?.zipcode}"></td>
+
+                <td>
+                    <form th:action="@{/members/delete/{memberId}(memberId=${member.id})}" method="post" onsubmit="return confirm('Are you sure?');">
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
+
+
+                </td>
             </tr>
             </tbody>
         </table>
