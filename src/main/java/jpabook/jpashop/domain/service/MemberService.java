@@ -19,7 +19,7 @@ public class MemberService {
 
     public Long join(Member member) {
         // 회원 저장
-        member.setRole(Role.USER);
+        member.setRole(Role.ROLE_USER);
         return memberRepository.save(member).getId();
     }
 

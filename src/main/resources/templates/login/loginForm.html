@@ -1,10 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head th:replace="fragments/header :: header">
     <title>로그인</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}"/> <!-- 스타일시트 연결 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 
@@ -17,7 +15,7 @@
     <main>
         <div class="login-form">
             <h2>로그인</h2>
-            <form th:action="@{/login}" method="post">
+            <form action="/login/loginForm" method="post">
                 <!-- 사용자 이름 필드 -->
                 <div class="form-group">
                     <label for="username">사용자 이름</label>
@@ -33,6 +31,8 @@
                 <!-- 로그인 버튼 -->
                 <button type="submit" class="btn btn-primary">로그인</button>
             </form>
+
+            <a href = "/oauth2/authorization/naver">네이버 로그인</a>
 
             <!-- 에러 메시지 -->
             <div th:if="${param.error}" class="alert alert-danger">

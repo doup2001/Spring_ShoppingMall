@@ -1,4 +1,4 @@
-package jpabook.jpashop.domain.service;
+package jpabook.jpashop.domain.dto;
 
 public interface OAuth2UserResponse {
 
@@ -8,6 +8,6 @@ public interface OAuth2UserResponse {
 
     String getEmail();
 
-    String getUsername();
+    String getName();
 
 }
