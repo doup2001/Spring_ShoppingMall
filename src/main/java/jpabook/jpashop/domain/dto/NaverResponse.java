@@ -1,7 +1,5 @@
 package jpabook.jpashop.domain.dto;
 
-import jpabook.jpashop.domain.service.OAuth2UserResponse;
-
 import java.util.Map;
 
 public class NaverResponse implements OAuth2UserResponse{
@@ -28,7 +26,7 @@ public class NaverResponse implements OAuth2UserResponse{
     }
 
     @Override
-    public String getUsername() {
+    public String getName() {
         return attribute.get("name").toString();
     }
 
