@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,8 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private Role Role;
+
+    private String email;
 
 
 }

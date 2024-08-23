@@ -53,6 +53,7 @@ public class InitDB {
             Member member = new Member();
             member.setName(name);
             member.setAddress(new Address(city, street, zipcode));
+            member.setRole(Role.ROLE_USER);
             return member;
         }
         private Book createBook(String name, int price, int stockQuantity) {

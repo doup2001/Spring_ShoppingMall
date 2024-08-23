@@ -20,31 +20,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-
         http
-                .csrf(csrf -> csrf.disable());
-
-        http
-                .httpBasic(httpBasic -> httpBasic.disable());
-
-        http
-                .formLogin((formLogin) -> formLogin.loginPage("/login/login").permitAll());
-
-//        http
-//                .formLogin((login) -> login.disable());
-
-        http
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/login") // 커스텀 로그인 페이지 URL
+                        .permitAll()
+                        .defaultSuccessUrl("/", true)
+                )
                 .oauth2Login((oauth) -> oauth
+                        .defaultSuccessUrl("/", true)
                         .userInfoEndpoint(userInfoEndpointConfig ->
-                                userInfoEndpointConfig.userService(customOAuth2UserService)));
-
-        http
+                                userInfoEndpointConfig.userService(customOAuth2UserService))
+                )
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/css/**", "/js/**").permitAll()
-                        .requestMatchers("/","/login/login", "/home", "/items/createItemForm","/items/itemList").permitAll()
-                        .requestMatchers("/member/createMemberForm,/items/updateItemForm", "/order/orderForm").hasRole("USER")
-                        .requestMatchers("/order/orderList", "/member/memberList").hasRole("ADMIN")
-                        .anyRequest().permitAll());
+                        .requestMatchers("/","/home", "/members/new", "/items", "/login").permitAll()
+                        .requestMatchers("/members", "/items/new", "/orders/**").hasRole("USER")
+                        .requestMatchers("/members/**", "/items/**", "/orders/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                );
 
 
         return http.build();
