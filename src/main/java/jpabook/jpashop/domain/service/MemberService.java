@@ -2,6 +2,7 @@ package jpabook.jpashop.domain.service;
 
 import jakarta.transaction.Transactional;
 import jpabook.jpashop.domain.entity.Member;
+import jpabook.jpashop.domain.entity.Role;
 import jpabook.jpashop.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class MemberService {
 
     public Long join(Member member) {
         // 회원 저장
+        member.setRole(Role.USER);
         return memberRepository.save(member).getId();
     }
 
