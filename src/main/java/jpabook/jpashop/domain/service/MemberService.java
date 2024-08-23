@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain.service;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jpabook.jpashop.domain.dto.OAuth2UserResponse;
 import jpabook.jpashop.domain.entity.Member;
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
+    private final EntityManager em;
     public Long join(Member member) {
 
         // 회원 저장
@@ -26,8 +27,10 @@ public class MemberService {
     }
 
     public Member findByName(String username) {
+        // 사용자 이름으로 회원 조회
         return memberRepository.findByName(username);
     }
+
 
     public Member findById(Long id) {
         // 회원 ID로 조회 (Optional 사용)
