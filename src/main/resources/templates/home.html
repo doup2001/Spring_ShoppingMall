@@ -19,8 +19,8 @@
             <a class ="btn btn-lg btn-light" th:href="@{/mypage}"> 마이페이지</a>
         </p>
 
-        <p class="lead">회원 기능</p>
-        <p>
+        <p class="lead" th:if="${isAdmin}">회원 기능</p>
+        <p th:if="${isAdmin}">
             <a class="btn btn-lg btn-secondary" th:href="@{/members/new}">회원 가입</a>
             <a class="btn btn-lg btn-secondary" th:href="@{/members}">회원 목록</a>
         </p>

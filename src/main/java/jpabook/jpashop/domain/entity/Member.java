@@ -17,7 +17,11 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    private String user_id;
+
     private String name;
+
+    private String email;
 
     @Embedded
     private Address Address;
@@ -28,7 +32,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role Role;
 
-    private String email;
 
+    private String password;
 
 }

@@ -1,12 +1,15 @@
 package jpabook.jpashop.domain.controller;
 
 import jakarta.validation.Valid;
+import jpabook.jpashop.domain.dto.JoinDto;
 import jpabook.jpashop.domain.dto.MemberFormDto;
 import jpabook.jpashop.domain.entity.Address;
 import jpabook.jpashop.domain.entity.Member;
+import jpabook.jpashop.domain.service.CustomOAuth2UserService;
 import jpabook.jpashop.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,29 +24,63 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+//    @GetMapping("/new")
+//    public String createForm(Model model) {
+//        model.addAttribute("memberForm", new MemberFormDto());
+//        return "members/joinMemberForm.html";
+//    }
+//
+//    @PostMapping("/new")
+//    public String createMember(@Valid @ModelAttribute MemberFormDto memberForm, BindingResult result) {
+//
+//        if (result.hasErrors()) {
+//            return "members/joinMemberForm.html";
+//        }
+//
+//        // Member 객체 생성 및 설정
+//        Member member = new Member();
+//        member.setName(memberForm.getName());
+//        member.setAddress(new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode()));
+//
+//        // 회원 가입 처리
+//        memberService.join(member);
+//
+//        return "redirect:/members";
+//    }
+
 
     @GetMapping("/new")
     public String createForm(Model model) {
-        model.addAttribute("memberForm", new MemberFormDto());
+        model.addAttribute("JoinDto", new JoinDto());
         return "members/createMemberForm";
     }
 
     @PostMapping("/new")
-    public String createMember(@Valid @ModelAttribute MemberFormDto memberForm, BindingResult result) {
+    public String createMember(@ModelAttribute JoinDto joinDto, BindingResult result) {
 
         if (result.hasErrors()) {
             return "members/createMemberForm";
         }
 
         // Member 객체 생성 및 설정
-        Member member = new Member();
-        member.setName(memberForm.getName());
-        member.setAddress(new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode()));
+        Member member = getMember(joinDto);
 
         // 회원 가입 처리
         memberService.join(member);
 
-        return "redirect:/members";
+        return "redirect:/home";
+    }
+
+    private Member getMember(JoinDto joinDto) {
+        Member member = new Member();
+        member.setUser_id(joinDto.getUser_id());
+        member.setEmail(joinDto.getEmail());
+        member.setName(joinDto.getName());
+        member.setPassword(bCryptPasswordEncoder.encode(joinDto.getPassword()));
+        member.setAddress(new Address(joinDto.getCity(), joinDto.getStreet(), joinDto.getZipcode()));
+        return member;
     }
 
     @GetMapping
