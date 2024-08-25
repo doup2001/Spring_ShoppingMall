@@ -1,7 +1,6 @@
 package jpabook.jpashop.domain.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,9 +16,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    private String user_id;
-
-    private String name;
+    private String username;
 
     private String email;
 

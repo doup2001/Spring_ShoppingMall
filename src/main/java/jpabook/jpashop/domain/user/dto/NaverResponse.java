@@ -1,4 +1,4 @@
-package jpabook.jpashop.domain.dto;
+package jpabook.jpashop.domain.user.dto;
 
 import java.util.Map;
 import java.util.Optional;

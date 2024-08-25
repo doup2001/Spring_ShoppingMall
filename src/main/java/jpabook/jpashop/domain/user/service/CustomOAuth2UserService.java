@@ -1,11 +1,10 @@
-package jpabook.jpashop.domain.service;
+package jpabook.jpashop.domain.user.service;
 
-import jpabook.jpashop.domain.dto.CustomOAuth2User;
-import jpabook.jpashop.domain.dto.NaverResponse;
-import jpabook.jpashop.domain.dto.OAuth2UserResponse;
-import jpabook.jpashop.domain.entity.Member;
-import jpabook.jpashop.domain.entity.Role;
 import jpabook.jpashop.domain.repository.MemberRepository;
+import jpabook.jpashop.domain.user.CustomOAuth2User;
+import jpabook.jpashop.domain.user.dto.NaverResponse;
+import jpabook.jpashop.domain.user.dto.OAuth2UserResponse;
+import jpabook.jpashop.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -21,7 +20,7 @@ import static jpabook.jpashop.domain.entity.Role.ROLE_USER;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     public OAuth2User loadUser(OAuth2UserRequest request) throws OAuth2AuthenticationException{
 
         OAuth2User oAuth2User = super.loadUser(request);
@@ -36,23 +35,32 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         String username = oAuth2UserResponse.getProvider() + " " + oAuth2UserResponse.getName();
-        Member existsmember = memberService.findByName(username);
+        Member existsmember = memberRepository.findByUsername(username);
+
         if (existsmember == null) {
+//            JoinDto member = new JoinDto();
+//            member.setName(username);
+//            member.setEmail(oAuth2UserResponse.getEmail());
+            log.info("[Mylog]:" + oAuth2UserResponse.toString());
+
             Member member = new Member();
-            member.setName(username);
+            member.setUsername(username);
             member.setEmail(oAuth2UserResponse.getEmail());
             member.setRole(ROLE_USER);
 
-            memberService.join(member);
+            memberRepository.save(member);
         } else {
+//            JoinDto existsmember_ = new JoinDto();
             existsmember.setEmail(oAuth2UserResponse.getEmail());
-            memberService.join(existsmember);
+            memberRepository.save(existsmember);
         }
 
         String role = "ROLE_USER";
         return new CustomOAuth2User(oAuth2UserResponse, role);
 
     }
+
+
 
 
 

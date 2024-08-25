@@ -1,11 +1,8 @@
-package jpabook.jpashop.domain.controller;
+package jpabook.jpashop.domain.user.controller;
 
-import jakarta.validation.Valid;
 import jpabook.jpashop.domain.dto.JoinDto;
-import jpabook.jpashop.domain.dto.MemberFormDto;
 import jpabook.jpashop.domain.entity.Address;
 import jpabook.jpashop.domain.entity.Member;
-import jpabook.jpashop.domain.service.CustomOAuth2UserService;
 import jpabook.jpashop.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,23 +61,9 @@ public class MemberController {
             return "members/createMemberForm";
         }
 
-        // Member 객체 생성 및 설정
-        Member member = getMember(joinDto);
-
-        // 회원 가입 처리
-        memberService.join(member);
+        memberService.join(joinDto);
 
         return "redirect:/home";
-    }
-
-    private Member getMember(JoinDto joinDto) {
-        Member member = new Member();
-        member.setUser_id(joinDto.getUser_id());
-        member.setEmail(joinDto.getEmail());
-        member.setName(joinDto.getName());
-        member.setPassword(bCryptPasswordEncoder.encode(joinDto.getPassword()));
-        member.setAddress(new Address(joinDto.getCity(), joinDto.getStreet(), joinDto.getZipcode()));
-        return member;
     }
 
     @GetMapping
@@ -100,5 +83,16 @@ public class MemberController {
     }
 
 
+
+//    //로직
+//    private Member getMember(JoinDto joinDto) {
+//        Member member = new Member();
+//        member.setUser_id(joinDto.getUsername());
+//        member.setEmail(joinDto.getEmail());
+//        member.setName(joinDto.getName());
+//        member.setPassword(bCryptPasswordEncoder.encode(joinDto.getPassword()));
+//        member.setAddress(new Address(joinDto.getCity(), joinDto.getStreet(), joinDto.getZipcode()));
+//        return member;
+//    }
 
 }

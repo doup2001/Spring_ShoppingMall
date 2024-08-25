@@ -9,11 +9,11 @@
     <div class="jumbotron">
         <div class="user-info">
             <p><strong>이름:</strong> <span th:text="${username}">이름</span></p>
-            <p><strong>이메일:</strong> <span th:text="${email}">이메일</span></p>
+            <p><strong>주소:</strong> <span th:text="${city}">주소</span></p>
             <p><strong>역할:</strong> <span th:text="${role}">역할</span></p>
         </div>
         <div class="button-container">
-            <a class="button" th:href="@{/members/new}">개인정보 수정</a>
+            <a class="button" th:href="@{/members/{memberId}/edit}">개인정보 수정</a>
         </div>
     </div>
 </div>

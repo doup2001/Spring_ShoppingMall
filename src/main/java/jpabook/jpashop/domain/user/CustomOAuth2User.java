@@ -1,7 +1,6 @@
-package jpabook.jpashop.domain.dto;
+package jpabook.jpashop.domain.user;
 
-import jpabook.jpashop.domain.entity.Role;
-import lombok.RequiredArgsConstructor;
+import jpabook.jpashop.domain.user.dto.OAuth2UserResponse;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
