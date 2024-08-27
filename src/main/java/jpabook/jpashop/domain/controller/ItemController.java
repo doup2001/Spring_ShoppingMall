@@ -5,6 +5,11 @@ import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.dto.ItemFormDto;
 import jpabook.jpashop.domain.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +19,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/items")
 @RequiredArgsConstructor
+@Slf4j
 public class ItemController {
 
     private final ItemService itemService;
@@ -34,13 +40,29 @@ public class ItemController {
         item.setIsbn(form.getIsbn());
 
         itemService.save(item);
-        return "redirect:/items";
+        return "redirect:/items/{page}";
     }
 
-    @GetMapping
-    public String listItem(Model model) {
-        List<Item> items = itemService.findAll();
+//    @GetMapping
+//    public String listItem(Model model) {
+//        Page<Item> items = itemService.findAll();
+//        model.addAttribute("items", items);
+//        return "items/itemList"; // 템플릿 경로 수정
+//    }
+
+    @GetMapping("/{page}")
+    public String listItem(@PathVariable int page, Model model) {
+        Sort sort = Sort.by("id").ascending();
+        Pageable pageable = PageRequest.of(page, 10, sort);
+        
+        Page<Item> items = itemService.findAll(pageable);
+
         model.addAttribute("items", items);
+        model.addAttribute("currentPage", page);
+
+        System.out.println("items.getNumber() = " + items.getNumber());
+        System.out.println("items.hasNext() = " + items.hasNext());
+        System.out.println("items.getTotalElements() = " + items.getTotalElements());
         return "items/itemList"; // 템플릿 경로 수정
     }
 

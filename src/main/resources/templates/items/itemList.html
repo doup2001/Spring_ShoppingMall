@@ -36,5 +36,30 @@
 
 </div> <!-- /container -->
 
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <!-- Previous button -->
+        <li class="page-item" th:classappend="${!items.hasPrevious()} ? 'disabled' : ''">
+            <a class="page-link" th:href="@{/items/{page}(page=${currentPage - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <!-- Page number buttons -->
+        <li class="page-item" th:each="i : ${#numbers.sequence(((currentPage / 10) * 10), (((currentPage / 10) * 10) + 9) > items.totalPages - 1 ? items.totalPages - 1 : ((currentPage / 10) * 10) + 9)}"
+            th:classappend="${i == currentPage} ? 'active' : ''">
+            <a class="page-link" th:href="@{/items/{page}(page=${i})}" th:text="${i + 1}"></a>
+        </li>
+
+        <!-- Next button -->
+        <li class="page-item" th:classappend="${!items.hasNext()} ? 'disabled' : ''">
+            <a class="page-link" th:href="@{/items/{page}(page=${currentPage + 1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+</div>
 </body>
 </html>

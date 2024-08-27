@@ -48,8 +48,8 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**").permitAll()
                         .requestMatchers("/", "/home", "/members/new", "/items", "/login").permitAll()
                         .requestMatchers("/members", "/items/new", "/orders/**").hasRole("USER")
-                        .requestMatchers("/members/**", "/items/**", "/orders/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/members/**", "/orders/**").hasRole("ADMIN")
+                        .anyRequest().permitAll()
                 );
         http
                 .logout((logout) -> logout

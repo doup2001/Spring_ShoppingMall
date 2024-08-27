@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.IntStream;
+
 
 @Component
 @RequiredArgsConstructor
@@ -16,12 +18,25 @@ public class InitDB {
     public void init() {
         initService.dbInit1();
         initService.dbInit2();
+
+        for (int i = 1; i < 10; i++) {
+            initService.itemInit(i);
+        }
     }
     @Component
     @Transactional
     @RequiredArgsConstructor
     static class InitService {
         private final EntityManager em;
+
+        public void itemInit(int i) {
+            Book book = new Book();
+                book.setName("Book "+i);
+                book.setStockQuantity(i);
+                book.setPrice(i);
+                em.persist(book);
+            }
+
         public void dbInit1() {
             Member member = createMember("userA", "1234",  "서울", "1", "1111"); em.persist(member);
             Book book1 = createBook("JPA1 BOOK", 10000, 100);
@@ -70,4 +85,5 @@ public class InitDB {
             delivery.setAddress(member.getAddress());
             return delivery;
         }
-    } }
+    }
+}
