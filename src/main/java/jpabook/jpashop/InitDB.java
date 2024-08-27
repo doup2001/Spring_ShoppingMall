@@ -19,7 +19,7 @@ public class InitDB {
         initService.dbInit1();
         initService.dbInit2();
 
-        for (int i = 1; i < 300; i++) {
+        for (int i = 1; i < 10; i++) {
             initService.itemInit(i);
         }
     }
