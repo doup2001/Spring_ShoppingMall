@@ -16,7 +16,7 @@
                 <div class="form-group mx-sm-1 mb-2">
                     <select th:field="*{orderStatus}" class="form-control">
                         <option value="">주문상태</option>
-                        <option th:each="orderStatus : ${T(jpabook.jpashop.domain.OrderStatus).values()}"
+                        <option th:each="orderStatus : ${T(jpabook.jpashop.domain.entity.OrderStatus).values()}"
                                 th:value="${orderStatus}"
                                 th:text="${orderStatus}">option
                         </option>
@@ -33,7 +33,7 @@
                 <th>회원명</th>
                 <th>대표상품 이름</th>
                 <th>대표상품 주문가격</th>
-                <th>대표상품 주문수량</th>
+                <th>수량</th>
                 <th>상태</th>
                 <th>일시</th>
                 <th></th>
@@ -42,7 +42,7 @@
             <tbody>
             <tr th:each="item : ${orders}">
                 <td th:text="${item.id}"></td>
-                <td th:text="${item.member.name}"></td>
+                <td th:text="${item.member.username}"></td>
                 <td th:text="${item.orderItems[0].item.name}"></td>
                 <td th:text="${item.orderItems[0].orderPrice}"></td>
                 <td th:text="${item.orderItems[0].count}"></td>

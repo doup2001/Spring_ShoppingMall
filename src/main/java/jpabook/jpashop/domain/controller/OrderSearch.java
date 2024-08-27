@@ -1,6 +1,6 @@
 package jpabook.jpashop.domain.controller;
 
-import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.domain.entity.OrderStatus;
 import lombok.Data;
 
 @Data

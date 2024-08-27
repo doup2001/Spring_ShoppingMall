@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .naver-login-button img {
+            width: 20px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <form role="form" th:action="@{/login}" th:object="${loginDto}" method="post">
+        <div class="form-group">
+            <label for="username">아이디</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="아이디를 입력하세요" required>
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
+        </div>
+        <button type="submit">로그인</button>
+    </form>
+
+    <div class="form-group">
+
+       <label>소셜 로그인 방법</label>
+        <div><a href="/members/new" class="join-button">회원가입</a>
+
+        </div>
+        <div>
+        <a href="#" th:href="@{/oauth2/authorization/naver}" class="naver-login-button"> 네이버 로그인 </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
