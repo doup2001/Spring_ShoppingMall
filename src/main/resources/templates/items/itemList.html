@@ -36,5 +36,26 @@
 
 </div> <!-- /container -->
 
+<!-- 페이징 처리 -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item" th:classappend="${items.hasPrevious()} ? 'disabled' : ''">
+            <a class="page-link" href="#" th:href="@{/items/{page}(page=${currentPage - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, items.totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active' : ''">
+            <a class="page-link" th:href="@{/items/{page}(page=${i})}" th:text="${i + 1}"></a>
+        </li>
+        <li class="page-item" th:classappend="${items.hasNext()} ? 'disabled' : ''">
+            <a class="page-link" href="#" th:href="@{/items/{page}(page=${currentPage + 1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+</div>
 </body>
 </html>

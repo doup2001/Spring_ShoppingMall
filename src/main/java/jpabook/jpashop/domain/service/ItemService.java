@@ -5,10 +5,12 @@ import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.dto.ItemFormDto;
 import jpabook.jpashop.domain.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +28,9 @@ public class ItemService {
                 .orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + id));
     }
 
-    public List<Item> findAll() {
-        return itemRepository.findAll();
+    public Page<Item> findAll(Pageable pageable) {
+
+        return itemRepository.findAll(pageable);
     }
 
     // 수정 로직

@@ -9,6 +9,10 @@ import jpabook.jpashop.domain.service.MemberService;
 import jpabook.jpashop.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +29,11 @@ public class OrderController {
     private final ItemService itemService;
 
     @GetMapping("/order")
-    public String orderForm(Model model) {
+    public String orderForm(@RequestParam(defaultValue = "0")int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").ascending());
+
         List<Member> members = memberService.findAll(); // findByAll로 변경
-        List<Item> items = itemService.findAll(); // findByAll로 변경
+        Page<Item> items = itemService.findAll(pageable); // findByAll로 변경
 
         model.addAttribute("members", members);
         model.addAttribute("items", items);
