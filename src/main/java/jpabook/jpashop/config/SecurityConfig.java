@@ -46,10 +46,10 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/css/**", "/js/**").permitAll()
-                        .requestMatchers("/", "/home", "/members/new", "/items", "/login").permitAll()
+                        .requestMatchers("/", "/home", "/members/new", "/items/**", "/login").permitAll()
                         .requestMatchers("/members", "/items/new", "/orders/**").hasRole("USER")
                         .requestMatchers("/members/**", "/orders/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 );
         http
                 .logout((logout) -> logout

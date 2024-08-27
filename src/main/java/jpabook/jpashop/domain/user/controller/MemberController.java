@@ -63,7 +63,7 @@ public class MemberController {
 
         memberService.join(joinDto);
 
-        return "redirect:/home";
+        return "login";
     }
 
     @GetMapping
@@ -79,7 +79,7 @@ public class MemberController {
     @PostMapping("/delete/{memberId}")
     public String delete(@PathVariable Long memberId) {
         memberService.delete(memberId);
-        return "redirect:/members";
+        return "redirect:/members/0";
     }
 
 
