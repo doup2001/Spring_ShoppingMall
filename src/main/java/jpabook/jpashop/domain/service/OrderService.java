@@ -57,4 +57,8 @@ public class OrderService {
         // Use findAll with Specification to get all matching orders without pagination
         return orderRepository.findAll(OrderSpecification.search(orderSearch));
     }
+
+    public Long findNow() {
+        return orderRepository.count();
+    }
 }
