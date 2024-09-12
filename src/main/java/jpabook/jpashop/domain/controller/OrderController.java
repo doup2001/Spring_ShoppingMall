@@ -53,7 +53,7 @@ public class OrderController {
 
     @PostMapping("/order")
 //    @ResponseBody
-    public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session, HttpServletRequest request) {
+    public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session) {
 
         Item item = itemService.findById(itemId);
         int price = item.getPrice();
@@ -82,15 +82,7 @@ public class OrderController {
         KakaoReadyResponse kakaoPayReadyResponse = kakaoPayService.kakaoPayReady(kakaoReadyRequsetDTO);
 
         // 요청의 User-Agent를 확인하여 모바일과 PC를 구분
-        String userAgent = request.getHeader("User-Agent");
-        String redirectUrl;
-        if (userAgent != null && (userAgent.toLowerCase().contains("mobi") || userAgent.toLowerCase().contains("android") || userAgent.toLowerCase().contains("iphone"))) {
-            // 모바일 디바이스인 경우
-            redirectUrl = kakaoPayReadyResponse.getNext_redirect_mobile_url();
-        } else {
-            // PC인 경우
-            redirectUrl = kakaoPayReadyResponse.getNext_redirect_pc_url();
-        }
+        String redirectUrl = kakaoPayReadyResponse.getNext_redirect_mobile_url();
 
         // 해당 URL로 리다이렉트
         return "redirect:" + redirectUrl;
