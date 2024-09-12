@@ -37,5 +37,12 @@ public class KakaoPayController {
         return new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
     }
 
+    @ResponseBody
+    @PostMapping("/refund")
+    public ResponseEntity refund() {
 
+        KakaoCancelResponse kakaoCancelResponse = kakaoPayService.kakaoCancel();
+
+        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+    }
 }
