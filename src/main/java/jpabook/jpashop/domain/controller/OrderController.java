@@ -1,18 +1,24 @@
 package jpabook.jpashop.domain.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jpabook.jpashop.domain.entity.OrderStatus;
 import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.entity.Member;
 import jpabook.jpashop.domain.entity.Order;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoCancelResponse;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyRequsetDTO;
+import jpabook.jpashop.domain.kakaoPay.service.KakaoPayService;
 import jpabook.jpashop.domain.service.ItemService;
 import jpabook.jpashop.domain.service.MemberService;
 import jpabook.jpashop.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +27,13 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
+@Log4j2
 public class OrderController {
 
     private final MemberService memberService;
     private final OrderService orderService;
     private final ItemService itemService;
+    private final KakaoPayService kakaoPayService;
 
     @GetMapping("/order")
     public String orderForm(@RequestParam(defaultValue = "0")int page, Model model) {
@@ -42,13 +49,37 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, Model model) {
-        Long orderId = orderService.order(memberId, itemId, count);
-        Order order = orderService.findById(orderId);
+//    @ResponseBody
+    public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session) {
 
-        model.addAttribute("order", order);
+        Item item = itemService.findById(itemId);
+        int price = item.getPrice();
 
-        return "redirect:/order"; // 주문 완료 후 다시 주문 페이지로 리다이렉트
+        Long orderId = orderService.findNow() + 1;
+
+        KakaoReadyRequsetDTO kakaoReadyRequsetDTO = KakaoReadyRequsetDTO.builder()
+                .cid("TC0ONETIME")
+                .partner_order_id(orderId)
+                .partner_user_id(memberId)
+                .item_name(itemService.findById(itemId).getName())
+                .quantity(count)
+                .total_amount(price*count)
+                .vat_amount((int)(price*count*0.1))
+                .tax_free_amount(0)
+                .build();
+
+        // 세션에 데이터 저장
+        session.setAttribute("orderId", orderId);
+        session.setAttribute("itemId", itemId);
+        session.setAttribute("memberId", memberId);
+        session.setAttribute("count", count);
+
+
+        // 카카오페이 결제 준비 요청 후 리다이렉트할 URL 가져오기
+        String redirectUrl = kakaoPayService.kakaoPayReady(kakaoReadyRequsetDTO).getNext_redirect_pc_url();
+
+        // 해당 URL로 리다이렉트
+        return "redirect:" + redirectUrl;
     }
 
     @GetMapping("/orders")
@@ -61,8 +92,9 @@ public class OrderController {
 
     @PostMapping("/orders/{orderId}/cancel")
     public String cancel(@PathVariable Long orderId) {
-        Order order = orderService.findById(orderId);
-        orderService.cancelOrder(orderId); // order.getId() 대신 orderId를 직접 사용
+
+        int count = orderService.cancelOrder(orderId);// order.getId() 대신 orderId를 직접 사용
+        KakaoCancelResponse kakaoCancelResponse = kakaoPayService.kakaoCancel(orderId,count);
 
         return "redirect:/orders";
     }

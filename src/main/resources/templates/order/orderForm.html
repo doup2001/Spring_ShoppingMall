@@ -24,8 +24,14 @@
                 <option value="">상품선택</option>
                 <option th:each="item : ${items}"
                         th:value="${item.id}"
-                        th:text="${item.name}" />
+                        th:data-price="${item.price}"
+                        th:text="${item.name}"/>
             </select>
+        </div>
+
+        <div class="form-group">
+            <label for="itemPrice">상품 가격</label>
+            <input type="text" name="itemPrice" id="itemPrice" class="form-control" readonly />
         </div>
 
         <div class="form-group">
@@ -33,8 +39,9 @@
             <input type="number" name="count" class="form-control" id="count" placeholder="주문 수량을 입력하세요">
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">결제</button>
     </form>
+
     <br/>
     <div th:replace="fragments/footer :: footer" />
 
@@ -42,3 +49,22 @@
 
 </body>
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var itemSelect = document.getElementById('item');
+        var priceInput = document.getElementById('itemPrice');
+
+        itemSelect.addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var price = selectedOption.getAttribute('data-price');
+
+            // 가격 입력 박스를 업데이트
+            if (price) {
+                priceInput.value = price;
+            } else {
+                priceInput.value = '';
+            }
+        });
+    });
+</script>

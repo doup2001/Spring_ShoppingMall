@@ -48,13 +48,17 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + id));
     }
 
-    public void cancelOrder(Long id) {
+    public int cancelOrder(Long id) {
         Order order = findById(id); // Use findById to handle the exception
-        order.cancel(); // Call cancel method on the found order
+        return order.cancel(); // Call cancel method on the found order
     }
 
     public List<Order> findAll(OrderSearch orderSearch) {
         // Use findAll with Specification to get all matching orders without pagination
         return orderRepository.findAll(OrderSpecification.search(orderSearch));
+    }
+
+    public Long findNow() {
+        return orderRepository.count();
     }
 }
