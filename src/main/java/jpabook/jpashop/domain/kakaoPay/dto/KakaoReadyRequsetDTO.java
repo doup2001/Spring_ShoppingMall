@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -12,6 +14,8 @@ import org.springframework.util.MultiValueMap;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
+@Log4j2
 public class KakaoReadyRequsetDTO {
 
     private String cid;
@@ -26,14 +30,14 @@ public class KakaoReadyRequsetDTO {
     private String cancel_url;
     private String fail_url;
 
-    @Value("${payment.success.url}")
-    private String successUrl;
-
-    @Value("${payment.cancel.url}")
-    private String cancelUrl;
-
-    @Value("${payment.fail.url}")
-    private String failUrl;
+//    @Value("${kakao.success.url}")
+//    String successUrl;
+//
+//    @Value("${kakao.cancel.url}")
+//    String cancelUrl;
+//
+//    @Value("${kakao.fail.url}")
+//    String failUrl;
 
     public MultiValueMap<String, Object> getParametersMap() {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
@@ -45,9 +49,9 @@ public class KakaoReadyRequsetDTO {
         parameters.add("total_amount", this.total_amount); //총 가격
         parameters.add("vat_amount", this.vat_amount); //
         parameters.add("tax_free_amount", this.tax_free_amount);
-        parameters.add("approval_url", successUrl); // 성공 시 redirect url
-        parameters.add("cancel_url", cancelUrl); // 취소 시 redirect url
-        parameters.add("fail_url", failUrl); // 실패 시 redirect url
+        parameters.add("approval_url", "http://ec2-52-79-146-14.ap-northeast-2.compute.amazonaws.com:8080/order/success"); // 성공 시 redirect url
+        parameters.add("cancel_url", "http://ec2-52-79-146-14.ap-northeast-2.compute.amazonaws.com:8080/order/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "http://ec2-52-79-146-14.ap-northeast-2.compute.amazonaws.com:8080/order/fail"); // 실패 시 redirect url
 
 
         return parameters;
