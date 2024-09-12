@@ -88,6 +88,22 @@ public class OrderController {
         return "redirect:" + redirectUrl;
     }
 
+    @GetMapping("order/success")
+    public String afterPayRequest(@RequestParam("pg_token") String pgToken, HttpSession session) {
+
+        Long orderId = (Long) session.getAttribute("orderId");
+        Long memberId = (Long) session.getAttribute("memberId");
+        Long itemId = (Long) session.getAttribute("itemId");
+        int count = (int) session.getAttribute("count");
+
+        KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken, orderId,memberId);
+
+        if (kakaoApprove.getCid()!=null)
+            orderService.order(memberId, itemId, count);
+
+        return "redirect:/orders";
+    }
+
     @GetMapping("/orders")
     public String list(@ModelAttribute OrderSearch orderSearch, Model model) {
         List<Order> orders = orderService.findAll(orderSearch);
@@ -119,19 +135,5 @@ public class OrderController {
         return "order/orderList";
     }
 
-    @GetMapping("/success")
-    public String afterPayRequest(@RequestParam("pg_token") String pgToken, HttpSession session) {
 
-        Long orderId = (Long) session.getAttribute("orderId");
-        Long memberId = (Long) session.getAttribute("memberId");
-        Long itemId = (Long) session.getAttribute("itemId");
-        int count = (int) session.getAttribute("count");
-
-        KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken, orderId,memberId);
-
-        if (kakaoApprove.getCid()!=null)
-            orderService.order(memberId, itemId, count);
-
-        return "redirect:/orders";
-    }
 }
