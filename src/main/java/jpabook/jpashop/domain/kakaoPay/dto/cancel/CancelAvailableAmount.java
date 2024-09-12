@@ -1,5 +1,8 @@
 package jpabook.jpashop.domain.kakaoPay.dto.cancel;
 
+import lombok.Data;
+
+@Data
 public class CancelAvailableAmount {
 
     private int total; // 전체 취소 가능 금액

@@ -5,6 +5,7 @@ import jpabook.jpashop.domain.entity.OrderStatus;
 import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.entity.Member;
 import jpabook.jpashop.domain.entity.Order;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoCancelResponse;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyRequsetDTO;
 import jpabook.jpashop.domain.kakaoPay.service.KakaoPayService;
 import jpabook.jpashop.domain.service.ItemService;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,18 +51,20 @@ public class OrderController {
     @PostMapping("/order")
 //    @ResponseBody
     public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session) {
-//        Long orderId = orderService.order(memberId, itemId, count);
-//        Order order = orderService.findById(orderId);
+
+        Item item = itemService.findById(itemId);
+        int price = item.getPrice();
 
         Long orderId = orderService.findNow() + 1;
+
         KakaoReadyRequsetDTO kakaoReadyRequsetDTO = KakaoReadyRequsetDTO.builder()
                 .cid("TC0ONETIME")
                 .partner_order_id(orderId)
                 .partner_user_id(memberId)
                 .item_name(itemService.findById(itemId).getName())
                 .quantity(count)
-                .total_amount(10000*count)
-                .vat_amount((int) ((10000*count)*0.1))
+                .total_amount(price*count)
+                .vat_amount((int)(price*count*0.1))
                 .tax_free_amount(0)
                 .build();
 
@@ -87,8 +92,9 @@ public class OrderController {
 
     @PostMapping("/orders/{orderId}/cancel")
     public String cancel(@PathVariable Long orderId) {
-        Order order = orderService.findById(orderId);
-        orderService.cancelOrder(orderId); // order.getId() 대신 orderId를 직접 사용
+
+        int count = orderService.cancelOrder(orderId);// order.getId() 대신 orderId를 직접 사용
+        KakaoCancelResponse kakaoCancelResponse = kakaoPayService.kakaoCancel(orderId,count);
 
         return "redirect:/orders";
     }

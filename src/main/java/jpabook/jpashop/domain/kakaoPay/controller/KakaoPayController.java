@@ -2,13 +2,10 @@ package jpabook.jpashop.domain.kakaoPay.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoApproveResponse;
-import jpabook.jpashop.domain.kakaoPay.dto.KakaoCancelResponse;
 import jpabook.jpashop.domain.kakaoPay.service.KakaoPayService;
 import jpabook.jpashop.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,21 +17,6 @@ public class KakaoPayController {
     private final KakaoPayService kakaoPayService;
     private final OrderService orderService;
 
-//    @GetMapping
-//    public String home() {
-//        return "kakaoPay/kakaoPay";
-//    }
-
-//    @ResponseBody
-//    @PostMapping("/ready")
-//    public KakaoReadyResponse readyToKakaoPay(HttpSession session) {
-//
-//        KakaoDTO kakaoDTO = (KakaoDTO) session.getAttribute("kakaoOrder");
-//        log.info("[Kakao]" + kakaoDTO);
-//        return kakaoPayService.kakaoPayReady(kakaoDTO);
-//    }
-
-//    @ResponseBody
     @GetMapping("/success")
     public String afterPayRequest(@RequestParam("pg_token") String pgToken, HttpSession session) {
 
@@ -49,15 +31,15 @@ public class KakaoPayController {
             orderService.order(memberId, itemId, count);
 
         return "redirect:/orders";
-//        return new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
     }
 
-    @ResponseBody
-    @PostMapping("/refund")
-    public ResponseEntity refund() {
+//    @ResponseBody
+//    @PostMapping("/refund")
+//    public ResponseEntity refund() {
+//
+//        KakaoCancelResponse kakaoCancelResponse = kakaoPayService.kakaoCancel();
+//
+//        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+//    }
 
-        KakaoCancelResponse kakaoCancelResponse = kakaoPayService.kakaoCancel();
-
-        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
-    }
 }

@@ -1,6 +1,10 @@
 package jpabook.jpashop.domain.kakaoPay.dto.cancel;
 
+import lombok.Data;
+
+@Data
 public class CanceledAmount {
+
     private int total; // 취소된 전체 누적 금액
     private int tax_free; // 취소된 비과세 누적 금액
     private int vat; // 취소된 부가세 누적 금액
