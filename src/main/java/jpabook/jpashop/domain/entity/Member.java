@@ -16,13 +16,20 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    private String name;
+    private String username;
+
+    private String email;
 
     @Embedded
     private Address Address;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private Role Role;
+
+
+    private String password;
 
 }

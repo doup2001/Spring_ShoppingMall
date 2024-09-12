@@ -24,6 +24,7 @@ public class OrderItem {
     private Order order;
 
     private int orderPrice;
+
     private int count;
 
     //비즈니스 로직
@@ -40,13 +41,13 @@ public class OrderItem {
     }
 
     //
-    public void cancel() {
+    public int cancel() {
         getItem().addStock(count);
+        return count;
     }
 
     public int getTotalPrice() {
         return getOrderPrice() * getCount();
     }
-
 
 }

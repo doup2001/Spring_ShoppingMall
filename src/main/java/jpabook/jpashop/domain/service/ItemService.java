@@ -5,10 +5,12 @@ import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.dto.ItemFormDto;
 import jpabook.jpashop.domain.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,29 +20,35 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     public Long save(Item item) {
-        return itemRepository.save(item);
+        return itemRepository.save(item).getId();
     }
 
-    public Item findByone(Long id) {
-        return itemRepository.findByOne(id);
+    public Item findById(Long id) {
+        return itemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + id));
     }
 
-    public List<Item> findByAll() {
-        return itemRepository.findByAll();
+    public Page<Item> findAll(Pageable pageable) {
+
+        return itemRepository.findAll(pageable);
     }
 
-    //수정 로직
-
+    // 수정 로직
     public Item update(Long id, ItemFormDto updateItem) {
-        Book item = (Book) itemRepository.findByOne(id);
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + id));
 
         item.setName(updateItem.getName());
         item.setPrice(updateItem.getPrice());
         item.setStockQuantity(updateItem.getStockQuantity());
-        item.setIsbn(updateItem.getIsbn());
-        item.setAuthor(updateItem.getAuthor());
+        // `Item` 클래스에 `ISBN`과 `Author`를 설정할 수 있는 메소드가 없다면, 이를 처리할 하위 클래스를 사용해야 함
+        if (item instanceof Book) {
+            Book book = (Book) item;
+            book.setIsbn(updateItem.getIsbn());
+            book.setAuthor(updateItem.getAuthor());
+        }
 
+        // 엔티티 매니저에 의해 자동으로 업데이트됨 (영속성 컨텍스트에 의해 트랜잭션 종료 시 자동 저장)
         return item;
     }
-
 }

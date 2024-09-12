@@ -52,7 +52,7 @@ public class ItemServiceTest {
         Long itemId = itemService.save(book);
 
         //when
-        Item item = itemService.findByone(itemId);
+        Item item = itemService.findById(itemId);
         
         //then
         assertThat(item).isEqualTo(book);

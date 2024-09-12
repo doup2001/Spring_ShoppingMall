@@ -1,24 +1,31 @@
-HELP.md
-.gradle
+# Gradle 관련 파일 및 디렉토리
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### STS ###
-.apt_generated
+# 애플리케이션 설정 파일
+src/main/resources/application.yml
+application.yml
+
+# 데이터베이스 관련 설정 파일
+*.yml
+
+# Spring Tool Suite (STS) 관련 파일
+.apt_generated/
 .classpath
 .factorypath
 .project
-.settings
-.springBeans
-.sts4-cache
+.settings/
+.springBeans/
+.sts4-cache/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
-.idea
+# IntelliJ IDEA 관련 파일
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -26,12 +33,12 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
+# NetBeans 관련 파일
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# Visual Studio Code (VS Code) 관련 파일
 .vscode/
