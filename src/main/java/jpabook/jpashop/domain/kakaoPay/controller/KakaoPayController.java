@@ -1,10 +1,13 @@
 package jpabook.jpashop.domain.kakaoPay.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoApproveResponse;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoCancelResponse;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoDTO;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyResponse;
 import jpabook.jpashop.domain.kakaoPay.service.KakaoPayService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,20 +16,23 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/payment")
 @RequiredArgsConstructor
+@Log4j2
 public class KakaoPayController {
     private final KakaoPayService kakaoPayService;
 
-    @GetMapping
-    public String home() {
-        return "kakaoPay/kakaoPay";
-    }
+//    @GetMapping
+//    public String home() {
+//        return "kakaoPay/kakaoPay";
+//    }
 
-    @ResponseBody
-    @PostMapping("/ready")
-    public KakaoReadyResponse readyToKakaoPay() {
-
-        return kakaoPayService.kakaoPayReady();
-    }
+//    @ResponseBody
+//    @PostMapping("/ready")
+//    public KakaoReadyResponse readyToKakaoPay(HttpSession session) {
+//
+//        KakaoDTO kakaoDTO = (KakaoDTO) session.getAttribute("kakaoOrder");
+//        log.info("[Kakao]" + kakaoDTO);
+//        return kakaoPayService.kakaoPayReady(kakaoDTO);
+//    }
 
     @ResponseBody
     @GetMapping("/success")
