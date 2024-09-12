@@ -1,12 +1,15 @@
 package jpabook.jpashop.domain.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jpabook.jpashop.domain.entity.OrderStatus;
 import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.entity.Member;
 import jpabook.jpashop.domain.entity.Order;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoApproveResponse;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoCancelResponse;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyRequsetDTO;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyResponse;
 import jpabook.jpashop.domain.kakaoPay.service.KakaoPayService;
 import jpabook.jpashop.domain.service.ItemService;
 import jpabook.jpashop.domain.service.MemberService;
@@ -50,7 +53,7 @@ public class OrderController {
 
     @PostMapping("/order")
 //    @ResponseBody
-    public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session) {
+    public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session, HttpServletRequest request) {
 
         Item item = itemService.findById(itemId);
         int price = item.getPrice();
@@ -76,7 +79,18 @@ public class OrderController {
 
 
         // 카카오페이 결제 준비 요청 후 리다이렉트할 URL 가져오기
-        String redirectUrl = kakaoPayService.kakaoPayReady(kakaoReadyRequsetDTO).getNext_redirect_pc_url();
+        KakaoReadyResponse kakaoPayReadyResponse = kakaoPayService.kakaoPayReady(kakaoReadyRequsetDTO);
+
+        // 요청의 User-Agent를 확인하여 모바일과 PC를 구분
+        String userAgent = request.getHeader("User-Agent");
+        String redirectUrl;
+        if (userAgent != null && (userAgent.toLowerCase().contains("mobi") || userAgent.toLowerCase().contains("android") || userAgent.toLowerCase().contains("iphone"))) {
+            // 모바일 디바이스인 경우
+            redirectUrl = kakaoPayReadyResponse.getNext_redirect_mobile_url();
+        } else {
+            // PC인 경우
+            redirectUrl = kakaoPayReadyResponse.getNext_redirect_pc_url();
+        }
 
         // 해당 URL로 리다이렉트
         return "redirect:" + redirectUrl;
@@ -111,5 +125,21 @@ public class OrderController {
         model.addAttribute("orders", orders);
 
         return "order/orderList";
+    }
+
+    @GetMapping("/success")
+    public String afterPayRequest(@RequestParam("pg_token") String pgToken, HttpSession session) {
+
+        Long orderId = (Long) session.getAttribute("orderId");
+        Long memberId = (Long) session.getAttribute("memberId");
+        Long itemId = (Long) session.getAttribute("itemId");
+        int count = (int) session.getAttribute("count");
+
+        KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken, orderId,memberId);
+
+        if (kakaoApprove.getCid()!=null)
+            orderService.order(memberId, itemId, count);
+
+        return "redirect:/orders";
     }
 }

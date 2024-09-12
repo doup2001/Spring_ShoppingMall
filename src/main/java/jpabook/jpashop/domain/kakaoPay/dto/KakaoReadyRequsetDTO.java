@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -25,6 +26,15 @@ public class KakaoReadyRequsetDTO {
     private String cancel_url;
     private String fail_url;
 
+    @Value("${payment.success.url}")
+    private String successUrl;
+
+    @Value("${payment.cancel.url}")
+    private String cancelUrl;
+
+    @Value("${payment.fail.url}")
+    private String failUrl;
+
     public MultiValueMap<String, Object> getParametersMap() {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", this.cid);
@@ -35,9 +45,10 @@ public class KakaoReadyRequsetDTO {
         parameters.add("total_amount", this.total_amount); //총 가격
         parameters.add("vat_amount", this.vat_amount); //
         parameters.add("tax_free_amount", this.tax_free_amount);
-        parameters.add("approval_url", "http://localhost:8080/payment/success"); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8080/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:8080/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", successUrl); // 성공 시 redirect url
+        parameters.add("cancel_url", cancelUrl); // 취소 시 redirect url
+        parameters.add("fail_url", failUrl); // 실패 시 redirect url
+
 
         return parameters;
     }
