@@ -8,6 +8,7 @@ import jpabook.jpashop.domain.service.ItemService;
 import jpabook.jpashop.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,9 @@ import java.util.List;
 public class KakaoPayService {
 
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
-    static final String admin_Key = "04892e84443149e77874b7e83acbbef7"; // 공개 조심! 본인 애플리케이션의 어드민 키를 넣어주세요
+
+    @Value("${kakao.admin.key}")
+    String admin_Key;
     private KakaoReadyResponse kakaoReady;
     private final OrderService orderService;
 
