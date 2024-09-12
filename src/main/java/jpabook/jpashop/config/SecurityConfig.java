@@ -49,7 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/home", "/members/new", "/items/**", "/login").permitAll()
                         .requestMatchers("/members", "/items/new", "/orders/**").hasRole("USER")
                         .requestMatchers("/members/**", "/orders/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 );
         http
                 .logout((logout) -> logout

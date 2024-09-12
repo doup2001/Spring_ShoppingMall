@@ -33,13 +33,4 @@ public class KakaoPayController {
         return "redirect:/orders";
     }
 
-//    @ResponseBody
-//    @PostMapping("/refund")
-//    public ResponseEntity refund() {
-//
-//        KakaoCancelResponse kakaoCancelResponse = kakaoPayService.kakaoCancel();
-//
-//        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
-//    }
-
 }
