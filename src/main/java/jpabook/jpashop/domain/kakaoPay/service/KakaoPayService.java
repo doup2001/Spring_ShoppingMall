@@ -51,6 +51,32 @@ public class KakaoPayService {
         return kakaoReady;
     }
 
+    /**
+     * 결제 완료 승인
+     */
+    public KakaoApproveResponse approveResponse(String pgToken) {
+
+        // 카카오 요청
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("cid", cid);
+        parameters.add("tid", kakaoReady.getTid());
+        parameters.add("partner_order_id", "partner_order_id");
+        parameters.add("partner_user_id", "partner_user_id");
+        parameters.add("pg_token", pgToken);
+
+        // 파라미터, 헤더
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+
+        // 외부에 보낼 url
+        RestTemplate restTemplate = new RestTemplate();
+
+        KakaoApproveResponse approveResponse = restTemplate.postForObject(
+                "https://kapi.kakao.com/v1/payment/approve",
+                requestEntity,
+                KakaoApproveResponse.class);
+
+        return approveResponse;
+    }
 
     /**
      * 카카오 요구 헤더값
