@@ -5,7 +5,7 @@ import jpabook.jpashop.domain.entity.OrderStatus;
 import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.entity.Member;
 import jpabook.jpashop.domain.entity.Order;
-import jpabook.jpashop.domain.kakaoPay.dto.KakaoDTO;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoRequsetDTO;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyResponse;
 import jpabook.jpashop.domain.kakaoPay.service.KakaoPayService;
 import jpabook.jpashop.domain.service.ItemService;
@@ -13,7 +13,6 @@ import jpabook.jpashop.domain.service.MemberService;
 import jpabook.jpashop.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,13 +47,13 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    @ResponseBody
-    public KakaoReadyResponse order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session) {
+//    @ResponseBody
+    public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session) {
         Long orderId = orderService.order(memberId, itemId, count);
         Order order = orderService.findById(orderId);
 
 
-        KakaoDTO kakaoDTO = KakaoDTO.builder()
+        KakaoRequsetDTO kakaoRequsetDTO = KakaoRequsetDTO.builder()
                 .cid("TC0ONETIME")
                 .partner_order_id(orderId)
                 .partner_user_id(memberId)
@@ -65,7 +64,16 @@ public class OrderController {
                 .tax_free_amount(0)
                 .build();
 
-        return kakaoPayService.kakaoPayReady(kakaoDTO);
+        // 세션에 데이터 저장
+        session.setAttribute("orderId", orderId);
+        session.setAttribute("memberId", memberId);
+
+
+        // 카카오페이 결제 준비 요청 후 리다이렉트할 URL 가져오기
+        String redirectUrl = kakaoPayService.kakaoPayReady(kakaoRequsetDTO).getNext_redirect_pc_url();
+
+        // 해당 URL로 리다이렉트
+        return "redirect:" + redirectUrl;
     }
 
     @GetMapping("/orders")

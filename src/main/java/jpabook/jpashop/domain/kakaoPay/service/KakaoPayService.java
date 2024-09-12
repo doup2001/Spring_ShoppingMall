@@ -3,7 +3,7 @@ package jpabook.jpashop.domain.kakaoPay.service;
 import jakarta.transaction.Transactional;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoApproveResponse;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoCancelResponse;
-import jpabook.jpashop.domain.kakaoPay.dto.KakaoDTO;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoRequsetDTO;
 import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -22,10 +22,10 @@ public class KakaoPayService {
     static final String admin_Key = "04892e84443149e77874b7e83acbbef7"; // 공개 조심! 본인 애플리케이션의 어드민 키를 넣어주세요
     private KakaoReadyResponse kakaoReady;
 
-    public KakaoReadyResponse kakaoPayReady(KakaoDTO kakaoDTO) {
+    public KakaoReadyResponse kakaoPayReady(KakaoRequsetDTO kakaoRequsetDTO) {
         // 카카오페이 요청 양식
 
-        MultiValueMap<String, Object> parameters = kakaoDTO.getParametersMap();
+        MultiValueMap<String, Object> parameters = kakaoRequsetDTO.getParametersMap();
 
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -44,14 +44,14 @@ public class KakaoPayService {
     /**
      * 결제 완료 승인
      */
-    public KakaoApproveResponse approveResponse(String pgToken) {
+    public KakaoApproveResponse approveResponse(String pgToken, Long orderId, Long memberId) {
 
         // 카카오 요청
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
         parameters.add("tid", kakaoReady.getTid());
-        parameters.add("partner_order_id", "partner_order_id");
-        parameters.add("partner_user_id", "partner_user_id");
+        parameters.add("partner_order_id", orderId);
+        parameters.add("partner_user_id", memberId);
         parameters.add("pg_token", pgToken);
 
         // 파라미터, 헤더
