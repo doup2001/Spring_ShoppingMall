@@ -11,7 +11,7 @@ import org.springframework.util.MultiValueMap;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoRequsetDTO {
+public class KakaoReadyRequsetDTO {
 
     private String cid;
     private Long partner_order_id;

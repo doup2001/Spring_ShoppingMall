@@ -5,8 +5,7 @@ import jpabook.jpashop.domain.entity.OrderStatus;
 import jpabook.jpashop.domain.entity.Item.Item;
 import jpabook.jpashop.domain.entity.Member;
 import jpabook.jpashop.domain.entity.Order;
-import jpabook.jpashop.domain.kakaoPay.dto.KakaoRequsetDTO;
-import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyResponse;
+import jpabook.jpashop.domain.kakaoPay.dto.KakaoReadyRequsetDTO;
 import jpabook.jpashop.domain.kakaoPay.service.KakaoPayService;
 import jpabook.jpashop.domain.service.ItemService;
 import jpabook.jpashop.domain.service.MemberService;
@@ -49,11 +48,11 @@ public class OrderController {
     @PostMapping("/order")
 //    @ResponseBody
     public String order(@RequestParam Long memberId, @RequestParam Long itemId, @RequestParam int count, HttpSession session) {
-        Long orderId = orderService.order(memberId, itemId, count);
-        Order order = orderService.findById(orderId);
+//        Long orderId = orderService.order(memberId, itemId, count);
+//        Order order = orderService.findById(orderId);
 
-
-        KakaoRequsetDTO kakaoRequsetDTO = KakaoRequsetDTO.builder()
+        Long orderId = orderService.findNow() + 1;
+        KakaoReadyRequsetDTO kakaoReadyRequsetDTO = KakaoReadyRequsetDTO.builder()
                 .cid("TC0ONETIME")
                 .partner_order_id(orderId)
                 .partner_user_id(memberId)
@@ -66,11 +65,13 @@ public class OrderController {
 
         // 세션에 데이터 저장
         session.setAttribute("orderId", orderId);
+        session.setAttribute("itemId", itemId);
         session.setAttribute("memberId", memberId);
+        session.setAttribute("count", count);
 
 
         // 카카오페이 결제 준비 요청 후 리다이렉트할 URL 가져오기
-        String redirectUrl = kakaoPayService.kakaoPayReady(kakaoRequsetDTO).getNext_redirect_pc_url();
+        String redirectUrl = kakaoPayService.kakaoPayReady(kakaoReadyRequsetDTO).getNext_redirect_pc_url();
 
         // 해당 URL로 리다이렉트
         return "redirect:" + redirectUrl;
