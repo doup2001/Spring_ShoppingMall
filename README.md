@@ -5,7 +5,7 @@ http://eedo.shop:8080
 
 ---
 #### 도식도
-![도식도](https://github.com/user-attachments/assets/8bc35cdd-5982-4c67-9d36-953fb208dbe8)
+<img width="800" alt="스크린샷 2024-09-11 10 30 39" src="https://github.com/user-attachments/assets/8bc35cdd-5982-4c67-9d36-953fb208dbe8">
 
 ---
 
@@ -66,6 +66,28 @@ http://eedo.shop:8080
 ##### 주문 취소 시 상품재고 증가
 <img width="400" alt="스크린샷 2024-09-11 10 41 50" src="https://github.com/user-attachments/assets/4f441f6a-dbe0-4d13-b8a2-c9aaf9bd202c">
 <img width="400" alt="스크린샷 2024-09-11 10 31 31" src="https://github.com/user-attachments/assets/dc6b4bf8-1f75-4abc-aef9-dc4a41551d3e">
+
+----
+### 카카오 페이 API 기능 추가
+##### 주문 버튼 누를시 카카오페이 결제로 이동
+<img width="400" alt="스크린샷 2024-09-13 12 05 01" src="https://github.com/user-attachments/assets/fe2268d4-ffff-4da6-92c0-436f4cb0cca3">
+
+##### 주문하는 창
+###### 모바일 기기에서 결제
+<img width="300" alt ="스크린샷" src="https://github.com/user-attachments/assets/7a992d25-e1a6-47c0-8709-15ce3b47ea34">
+<img width="300" alt="스크린샷 2024-09-13 12 05 01" src="https://github.com/user-attachments/assets/16bd695d-fd73-4f26-9ee8-cd01a016f92f">
+
+
+###### 결제 완료시,주문 결과 창으로 이동
+<img width="400" alt="스크린샷 2024-09-13 12 05 41" src="https://github.com/user-attachments/assets/a2e829f8-b530-4eea-a64d-e2a0b1595d6c">
+
+---
+
+##### 주문 취소
+<img width="400" alt="스크린샷 2024-09-13 12 05 46" src="https://github.com/user-attachments/assets/dcc75cd7-f1d2-472c-84d9-ed3aa07e6ded">
+
+###### 돈 환불
+<img width="300" src="https://github.com/user-attachments/assets/5c6e001c-3db8-46a5-bd6e-555cb7e3fff4">
 
 
 
