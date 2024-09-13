@@ -49,9 +49,9 @@ public class KakaoReadyRequsetDTO {
         parameters.add("total_amount", this.total_amount); //총 가격
         parameters.add("vat_amount", this.vat_amount); //
         parameters.add("tax_free_amount", this.tax_free_amount);
-        parameters.add("approval_url", "http://ec2-52-79-146-14.ap-northeast-2.compute.amazonaws.com:8080/order/success"); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://ec2-52-79-146-14.ap-northeast-2.compute.amazonaws.com:8080/order/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://ec2-52-79-146-14.ap-northeast-2.compute.amazonaws.com:8080/order/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", "www.eedo.shop:8080/order/success"); // 성공 시 redirect url
+        parameters.add("cancel_url", "www.eedo.shop:8080/order/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "www.eedo.shop:8080/order/fail"); // 실패 시 redirect url
 
 
         return parameters;
