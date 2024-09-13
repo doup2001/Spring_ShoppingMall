@@ -1,5 +1,9 @@
 ### 스프링을 활용한 상품주문 웹사이트 구현
 ---
+#### 방문 링크
+http://eedo.shop:8080
+
+---
 #### 도식도
 ![도식도](https://github.com/user-attachments/assets/8bc35cdd-5982-4c67-9d36-953fb208dbe8)
 
